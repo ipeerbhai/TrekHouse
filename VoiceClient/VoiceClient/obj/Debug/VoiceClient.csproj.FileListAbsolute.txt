@@ -1,0 +1,17 @@
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\MainWindow.g.cs
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\App.g.cs
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient_MarkupCompile.cache
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient_MarkupCompile.lref
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\VoiceClient.exe.config
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\VoiceClient.exe
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\VoiceClient.pdb
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\Microsoft.Speech.dll
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\MainWindow.baml
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.g.resources
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.Properties.Resources.resources
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.csproj.GenerateResource.Cache
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.exe
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.pdb
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\WebDriver.dll
+C:\Github\TrekHouse\VoiceClient\VoiceClient\bin\Debug\WebDriver.xml
+C:\Github\TrekHouse\VoiceClient\VoiceClient\obj\Debug\VoiceClient.csprojResolveAssemblyReference.cache

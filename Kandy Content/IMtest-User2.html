@@ -31,7 +31,7 @@
 		<!-- User input: Recipient and message text fields. -->
 		Recipient: <input type="text" id="recipient"/>
 
-		Message: <textarea id="messageBox"> </textarea>
+		Message: <textarea id="messageBox"></textarea>
 
 		<!-- User input: Send button. -->
 		<input type="button" value="Send Message" onclick="sendMessage();"/>
@@ -131,9 +131,9 @@
 			// Display the message as incoming.
 			var sender = message.sender.user_id;
 			var theText = message.message.text;
-			
+			console.log(theText);
 			// Create the message element. Use Lodash to escape the message for security purposes.
-			var element = "<div>Incoming (" + sender + "): " + _.escape(theText) + "</div>"
+			var element = "<div>Incoming (" + sender + "): " + _.escape(message.message.text) + "</div>"
 			document.getElementById("chat-messages").innerHTML += element;
 			
 			if(theText === "hello") {
@@ -142,7 +142,7 @@
 		}
 		
 		function replyWithGreeting() {
-			var recipient = document.getElementById("recipient").value;
+			var recipient = "user1@23birdsonfire.gmail.com";//document.getElementById("recipient").value;
 			var message = "Nice to meet you!";
 
 			kandy.messaging.sendIm(recipient, message, onSendSuccess, onSendFailure);

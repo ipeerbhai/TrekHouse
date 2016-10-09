@@ -4,8 +4,7 @@
     <title>User1</title>
     <script src="https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.7.0/kandy.js" ></script>
     <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js" integrity="sha256-mTWSiTBKrphirOX+cJY9g4pRXn80ekTUW0JYnDa+dgM=" crossorigin="anonymous"></script>
-	<script>
+    <script>
       var projectApiKey = "DAK4a687c8caa7c4cad902fea421c33499c";
       var projectSecretKey = "DAS98901ad5f1cf4120a9c5e5bd0401e3ca";
       var user = "user1@23birdsonfire.gmail.com";
@@ -21,32 +20,12 @@
     <div id="local-stream">
 
     </div>
-	<fieldset>
-		<legend>Chat</legend>
-		<div id="chat-messages"> </div>
-	</fieldset>
-	<fieldset>
-		<legend>Send Messages</legend>
-
-		<!-- User input: Recipient and message text fields. -->
-		Recipient: <input type="text" id="recipient"/>
-
-		Message: <textarea id="messageBox"></textarea>
-
-		<!-- User input: Send button. -->
-		<input type="button" value="Send Message" onclick="sendMessage();"/>
-	</fieldset>
 
     <script>
       var genericCallback = function(d) {
         console.log(d);
       }
-	  var onMessageRecieved = function(e) {
-		console.log("Incoming Message:");
-        console.log(e);
-		onMessageReceived(e);
-        <!-- if (e.canAnswer()) { kandy.call.answerCall(e.getId(), true, {});}
-		};
+
       var onMedia = genericCallback;
       var onCallInitiated = genericCallback;
       var onCallInitiateFail = genericCallback;
@@ -88,50 +67,14 @@
             callansweredFailed: onCallAnsweredFailed,
             oncall: onCall,
             callended: onCallEnded,
-            callendedfailed: onCallEndedFailed,
-			
-			
-			// Message
-			message: onMessageRecieved
+            callendedfailed: onCallEndedFailed
         }
       };
       kandy.setup(config);
       kandy.login(projectApiKey, user, pass, genericCallback, genericCallback);
       //kandy.call.makeCall(fullUserId, cameraOn, callerId, options);
-	  
-		// Gathers the user's input and sends a message to the recipient.
-		function sendMessage() {
-			var recipient = document.getElementById("recipient").value;
-			var message = document.getElementById("messageBox").value;
 
-			kandy.messaging.sendIm(recipient, message, onSendSuccess, onSendFailure);
-		}
-		
-		// What to do on a successful send message.
-		function onSendSuccess(message) {
-			// Display the message as outgoing.
-			var recipient = message.destination.split("@")[0];
-			// Create the message element. Use Lodash to escape the message for security purposes.
-			var element = "<div>Outgoing (" + recipient + "): " + message.message.text + "</div>";
-			document.getElementById("chat-messages").innerHTML += element;
-		}
-		
-		// What to do on a failed send message.
-		function onSendFailure() {
-			log("Send Message failed.");
-		}
-		
-		/**
-		 * Called when the `message` event is triggered.
-		 * Receives the message object as a parameter.
-		 */
-		function onMessageReceived(message) {
-			// Display the message as incoming.
-			var sender = message.sender.user_id;
-			// Create the message element. Use Lodash to escape the message for security purposes.
-			var element = "<div>Incoming (" + sender + "): " + _.escape(message.message.text) + "</div>"
-			document.getElementById("chat-messages").innerHTML += element;
-		}
     </script>
   </body>
+
 </html>

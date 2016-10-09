@@ -1,7 +1,1 @@
-bin/
-obj/
-data/
-Memories/
-packages/
-node_modules/
-.vs/
+.DS_Store
