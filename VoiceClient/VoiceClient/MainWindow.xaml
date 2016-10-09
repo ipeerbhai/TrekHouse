@@ -1,0 +1,84 @@
+﻿<Window x:Class="VoiceClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VoiceClient"
+        WindowStyle="None" 
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Maximized"
+        BorderThickness="0"
+        Background="SkyBlue"
+        >
+    <Window.Resources>
+        <Storyboard x:Key="hearingBoard">
+            <ColorAnimation Storyboard.TargetName="leftEar"
+                            Storyboard.TargetProperty="Stroke.Color"
+                            From="DarkBlue"
+                            To="White"
+                            AutoReverse="True"
+                            RepeatBehavior="Forever"
+                            Duration="00:00:00.50"
+                            >
+            </ColorAnimation>
+            <ColorAnimation Storyboard.TargetName="rightEar"
+                            Storyboard.TargetProperty="Stroke.Color"
+                            From="DarkBlue"
+                            To="White"
+                            AutoReverse="True"
+                            RepeatBehavior="Forever"
+                            Duration="00:00:00.50"
+                            >
+            </ColorAnimation>
+        </Storyboard>
+        <Storyboard x:Key="voiceBoard" >
+            <DoubleAnimation 
+                    Storyboard.TargetName="voiceEllipse" 
+                    Storyboard.TargetProperty="Height"
+                    From="1"
+                    To="200"
+                    Duration="00:00:00.20"
+                    RepeatBehavior="Forever"
+                    AutoReverse="True"
+                    >
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Storyboard for the thought cloud -->
+        <Storyboard x:Key="thoughtBoard">
+            <DoubleAnimation Storyboard.TargetName="thoughtCloud"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0"
+                             To="0.7"
+                             AutoReverse="True"
+                             RepeatBehavior="Forever"
+                             Duration="00:00:02"
+                             >
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+    <Canvas Margin="10,0">
+        <!--test buttons-->
+        <Button x:Name="btnSpeak" Content="Talk" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="10" Visibility="Visible" />
+        <Button x:Name="btnHear" Content="Listen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="58" Visibility="Visible"/>
+        <Button x:Name="btnThink" Content="Think" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="34" Visibility="Visible"/>
+        <Button x:Name="btnScenarioTest" Content="Test" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="82" Visibility="Visible" />
+        <TextBlock x:Name="txtWhatHeard" Width="248" Height="510" Canvas.Left="484" Canvas.Top="9" TextWrapping="Wrap"></TextBlock>
+
+        <!--thought cloud-->
+        <Image x:Name="thoughtCloud" Source="Resources/Thoughtcloud.png" Height="104" Opacity="0" Canvas.Left="202" Width="262" Canvas.Top="10" RenderTransformOrigin="0.524,0.514" />
+
+
+        <!--Draw the eyes-->
+        <Rectangle x:Name="leftEye" Stroke="DarkBlue" StrokeThickness="3" Fill="Brown" Width="20" Height="30" Canvas.Left="279" Canvas.Top="119" />
+        <Rectangle x:Name="rightEye" Stroke="DarkBlue" StrokeThickness="3" Fill="Brown" Width="20" Height="30" Canvas.Left="361" Canvas.Top="119"/>
+
+        <!--ears-->
+        <Path x:Name="leftEar" Stroke="DarkBlue" StrokeThickness="3" Opacity="1" Canvas.Left="202.3" Canvas.Top="162.4" Data="M 0,0 C -10,15 20,20 0,30" />
+        <Path x:Name="rightEar" Stroke="DarkBlue" StrokeThickness="3" Opacity="1" Canvas.Left="460.7" Canvas.Top="162.4" Data="M 0,0 C 10,15 -20,20 0,30" />
+
+        <!--Mouth-->
+        <Path x:Name="smileyPath" Stroke="DarkBlue" StrokeThickness="3" Canvas.Left="231" Canvas.Top="251" Data="M 0,0 C 50,100 175,50 200,0" />
+        <Ellipse x:Name="voiceEllipse" Stroke="DarkBlue" StrokeThickness="3" Fill="SkyBlue" Width="200" Height="3" Canvas.Left="231" Canvas.Top="251" Visibility="Collapsed" />
+    </Canvas>
+</Window>
