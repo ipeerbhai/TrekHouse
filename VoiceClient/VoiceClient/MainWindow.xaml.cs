@@ -16,6 +16,9 @@ using System.Speech;
 using System.Speech.Recognition;
 using Microsoft.Speech;
 using System.Globalization;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Windows.Media.Animation;
 
 namespace VoiceClient
 {
@@ -52,8 +55,25 @@ namespace VoiceClient
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
+        public void BeginGlyph(string storyboardName)
+        {
+            Storyboard S = (Storyboard)TryFindResource(storyboardName);
+            if (S != null)
+                S.Begin();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void EndGlyph(string storyboardName)
+        {
+            Storyboard S = (Storyboard)TryFindResource(storyboardName);
+            if (S != null)
+                S.Stop();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
         public void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
+
             // pull the data about the speech we heard out of the event.
             string txt = e.Result.Text;
             float confidence = e.Result.Confidence;
@@ -62,6 +82,7 @@ namespace VoiceClient
             {
                 return; // we are not sure what we heard.
             }
+            BeginGlyph("hearingBoard");
 
             // check to see what we got from speech, then dispatch to appropriate handler.
             if (
@@ -70,8 +91,14 @@ namespace VoiceClient
                 )
             {
                 // Make a phone call.
-
+                string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html";
+                IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+                driver.Navigate().GoToUrl(url);
+                driver.Manage().Window.Maximize();
             }
+
+            EndGlyph("hearingBoard");
+
         }
 
     }
