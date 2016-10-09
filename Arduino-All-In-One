@@ -1,4 +1,6 @@
 // BME (weather all-in-one device) defines
+#include <Process.h>
+
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
@@ -6,10 +8,10 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
-#define BME_SCK 12
-#define BME_MISO 11
-#define BME_MOSI 10
-#define BME_CS 9
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
@@ -28,7 +30,26 @@ long duration, distance; // Duration used to calculate distance
 
 File testFile;
 
-void setup() {
+void runCurl() {
+    Process p;
+    int result = p.runShellCommand("curl --data \"door toggle\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
+    Serial.print("result:");
+    Serial.println(result);
+/*
+  p.begin("curl");
+  p.addParameter("https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
+  p.run();
+
+  while (p.available() > 0) {
+    char c = p.read();
+    SerialUSB.print(c);
+  }
+
+  SerialUSB.flush();
+  */
+}
+
+void setup() {  
   pinMode(MM_input, INPUT); // Read the input on pin 2
   Serial.begin(9600); // I also wanted to confirm the value I read.
 
@@ -112,6 +133,15 @@ void loop() {
 
   Serial.println();
 
+  Serial.println("debug 1");
+  runCurl();
+  Serial.println("debug 2");
+
   delay(1500);
+}
+
+
+void keyPressed() {
+  exit(0);  // Stops the program
 }
 
