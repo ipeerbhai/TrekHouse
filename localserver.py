@@ -7,7 +7,7 @@ try:
   print("connected to: " + ser.portstr)
   count=1
   while True:
-    line = ser.readline()
+    line = str(ser.readline())
     print(line)
     if "door" in line:
       r = requests.post(fullPath)
