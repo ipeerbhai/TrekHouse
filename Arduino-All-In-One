@@ -1,4 +1,6 @@
 // BME (weather all-in-one device) defines
+#include <Process.h>
+
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
@@ -6,10 +8,10 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
-#define BME_SCK 12
-#define BME_MISO 11
-#define BME_MOSI 10
-#define BME_CS 9
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
@@ -28,7 +30,30 @@ long duration, distance; // Duration used to calculate distance
 
 File testFile;
 
-void setup() {
+void sendCurlMessage(String action, String data) {
+    Process p;
+    String curlCommand = "curl --data \"" + data + "\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/" + action + "?webtask_no_cache=1";
+    int result = p.runShellCommand(curlCommand);
+    Serial.print("Curl command:");
+    Serial.println(curlCommand);
+//    int result = p.runShellCommand("curl --data \"door toggle\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
+    Serial.print("sendCurlMessage result:");
+    Serial.println(result);
+/*
+  p.begin("curl");
+  p.addParameter("https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
+  p.run();
+
+  while (p.available() > 0) {
+    char c = p.read();
+    SerialUSB.print(c);
+  }
+
+  SerialUSB.flush();
+  */
+}
+
+void setup() {  
   pinMode(MM_input, INPUT); // Read the input on pin 2
   Serial.begin(9600); // I also wanted to confirm the value I read.
 
@@ -105,13 +130,32 @@ void loop() {
   Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
   Serial.println(" m");
 
-  Serial.print("Humidity = ");
-  Serial.print(bme.readHumidity());
-  Serial.println(" %");
-
+  monitorHumidity();
 
   Serial.println();
 
   delay(1500);
+}
+
+int humidityState = 0;
+
+void monitorHumidity() {
+  Serial.print("Humidity = ");
+  Serial.print(bme.readHumidity());
+  Serial.println(" %");
+
+  if(humidityState == 0 && bme.readHumidity() > 70) {
+    humidityState = 1;
+    sendCurlMessage("door", "open");
+  }
+  else if(humidityState == 1 && bme.readHumidity() < 70) {
+    humidityState = 0;
+    sendCurlMessage("door", "close");
+  }
+
+}
+
+void keyPressed() {
+  exit(0);  // Stops the program
 }
 
