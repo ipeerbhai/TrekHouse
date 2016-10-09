@@ -8,8 +8,9 @@ try:
   count=1
   while True:
     line = str(ser.readline())
-    print(line)
-    if "door" in line:
+    if len(line) > 5:
+      print(line)
+    if "WINDOW" in line:
       r = requests.post(fullPath)
 except KeyboardInterrupt:
   ser.close()
