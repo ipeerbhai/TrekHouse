@@ -79,7 +79,6 @@ namespace VoiceClient
             string txt = e.Result.Text;
             float confidence = e.Result.Confidence;
             CloudHouse myTinyhouse = new CloudHouse();
-            IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
             LocalSpeechSynthesizer mysynth = new LocalSpeechSynthesizer();
 
             if (confidence < 0.60)
@@ -98,13 +97,18 @@ namespace VoiceClient
                 if (!m_bCallInitiated)
                 {
                     // start a task to do the work.
+                    mysynth.asyncTalk("Calling sam.");
                     Task RunningTask = Task.Factory.StartNew(() =>
                     {
-                        mysynth.asyncTalk("Calling sam.");
                         //string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
                         string url = @"https://ipeerbhai.github.io/TrekHouse/Kandy%20Content/AutoCallSam.html";
+                        IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
                         driver.Navigate().GoToUrl(url);
                         driver.Manage().Window.Maximize();
+                        IWebElement element = driver.FindElement(By.XPath("/"));
+                        element.SendKeys(Keys.Tab);
+                        element.SendKeys(Keys.Tab);
+                        element.SendKeys(Keys.Enter);
                         m_bCallInitiated = true;
                     });
 
