@@ -29,7 +29,7 @@ namespace VoiceClient
     public partial class MainWindow : Window
     {
         private SpeechRecognitionEngine sre = null; // this is the MS speech 11 recognizer from Vista, can be downloaded online.
-        private string[] m_StartStopCommands = { "computer call sam", "computer open window" };
+        private string[] m_StartStopCommands = { "trek house call sam", "trek house open window", "trek house close window" };
         static bool m_bCallInitiated = false;
 
         public MainWindow()
@@ -78,6 +78,9 @@ namespace VoiceClient
             // pull the data about the speech we heard out of the event.
             string txt = e.Result.Text;
             float confidence = e.Result.Confidence;
+            CloudHouse myTinyhouse = new CloudHouse();
+            IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+            LocalSpeechSynthesizer mysynth = new LocalSpeechSynthesizer();
 
             if (confidence < 0.60)
             {
@@ -97,8 +100,9 @@ namespace VoiceClient
                     // start a task to do the work.
                     Task RunningTask = Task.Factory.StartNew(() =>
                     {
-                        string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
-                        IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+                        mysynth.asyncTalk("Calling sam.");
+                        //string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
+                        string url = @"https://ipeerbhai.github.io/TrekHouse/Kandy%20Content/AutoCallSam.html";
                         driver.Navigate().GoToUrl(url);
                         driver.Manage().Window.Maximize();
                         m_bCallInitiated = true;
@@ -112,9 +116,16 @@ namespace VoiceClient
                 (txt.ToLowerInvariant().Contains("window"))
                 )
             {
-                LocalSpeechSynthesizer mysynth = new LocalSpeechSynthesizer();
                 mysynth.asyncTalk("Opening the window.");
-                CloudHouse myTinyhouse = new CloudHouse();
+                myTinyhouse.OpenWindow();
+            }
+            else if
+                (
+                (txt.ToLowerInvariant().Contains("close")) &&
+                (txt.ToLowerInvariant().Contains("window"))
+                )
+            {
+                mysynth.asyncTalk("Closing the window.");
                 myTinyhouse.OpenWindow();
             }
 
