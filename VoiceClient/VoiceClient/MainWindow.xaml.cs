@@ -29,7 +29,8 @@ namespace VoiceClient
     public partial class MainWindow : Window
     {
         private SpeechRecognitionEngine sre = null; // this is the MS speech 11 recognizer from Vista, can be downloaded online.
-        private string[] m_StartStopCommands = { "call sam", "hello computer" };
+        private string[] m_StartStopCommands = { "computer call sam", "computer open window" };
+        static bool m_bCallInitiated = false;
 
         public MainWindow()
         {
@@ -91,10 +92,30 @@ namespace VoiceClient
                 )
             {
                 // Make a phone call.
-                string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html";
-                IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
-                driver.Navigate().GoToUrl(url);
-                driver.Manage().Window.Maximize();
+                if (!m_bCallInitiated)
+                {
+                    // start a task to do the work.
+                    Task RunningTask = Task.Factory.StartNew(() =>
+                    {
+                        string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
+                        IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+                        driver.Navigate().GoToUrl(url);
+                        driver.Manage().Window.Maximize();
+                        m_bCallInitiated = true;
+                    });
+
+                }
+            }
+            else if 
+                (
+                (txt.ToLowerInvariant().Contains("open")) &&
+                (txt.ToLowerInvariant().Contains("window"))
+                )
+            {
+                LocalSpeechSynthesizer mysynth = new LocalSpeechSynthesizer();
+                mysynth.asyncTalk("Opening the window.");
+                CloudHouse myTinyhouse = new CloudHouse();
+                myTinyhouse.OpenWindow();
             }
 
             EndGlyph("hearingBoard");
