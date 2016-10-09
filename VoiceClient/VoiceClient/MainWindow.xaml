@@ -62,7 +62,7 @@
         <Button x:Name="btnSpeak" Content="Talk" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="10" Visibility="Visible" />
         <Button x:Name="btnHear" Content="Listen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="58" Visibility="Visible"/>
         <Button x:Name="btnThink" Content="Think" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="34" Visibility="Visible"/>
-        <Button x:Name="btnScenarioTest" Content="Test" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="82" Visibility="Visible" />
+        <Button x:Name="btnScenarioTest" Content="Test" Click="btnScenarioTest_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="10" Canvas.Top="82" Visibility="Visible" />
         <TextBlock x:Name="txtWhatHeard" Width="248" Height="510" Canvas.Left="484" Canvas.Top="9" TextWrapping="Wrap"></TextBlock>
 
         <!--thought cloud-->

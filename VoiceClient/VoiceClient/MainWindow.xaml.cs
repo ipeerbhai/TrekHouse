@@ -19,6 +19,7 @@ using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Windows.Media.Animation;
+using OpenQA.Selenium.Interactions;
 
 namespace VoiceClient
 {
@@ -100,21 +101,12 @@ namespace VoiceClient
                     mysynth.asyncTalk("Calling sam.");
                     Task RunningTask = Task.Factory.StartNew(() =>
                     {
-                        //string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
-                        string url = @"https://ipeerbhai.github.io/TrekHouse/Kandy%20Content/AutoCallSam.html";
-                        IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
-                        driver.Navigate().GoToUrl(url);
-                        driver.Manage().Window.Maximize();
-                        IWebElement element = driver.FindElement(By.XPath("/"));
-                        element.SendKeys(Keys.Tab);
-                        element.SendKeys(Keys.Tab);
-                        element.SendKeys(Keys.Enter);
-                        m_bCallInitiated = true;
+                        MakeCall();
                     });
 
                 }
             }
-            else if 
+            else if
                 (
                 (txt.ToLowerInvariant().Contains("open")) &&
                 (txt.ToLowerInvariant().Contains("window"))
@@ -137,5 +129,29 @@ namespace VoiceClient
 
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void btnScenarioTest_Click(object sender, RoutedEventArgs e)
+        {
+            MakeCall();
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------
+
+        private void MakeCall()
+        {
+            //string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
+            string url = @"https://ipeerbhai.github.io/TrekHouse/Kandy%20Content/AutoCallSam.html";
+            IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+
+
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Window.Maximize();
+
+            Actions action = new Actions(driver);
+            action.SendKeys(Keys.Tab);
+            action.SendKeys(Keys.Tab);
+            action.SendKeys(Keys.Enter);
+
+            m_bCallInitiated = true;
+        }
     }
 }
