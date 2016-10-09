@@ -1,0 +1,13 @@
+#app {
+  width: 95%;
+  max-width: 800px;
+  margin-bottom: 50px;
+}
+
+video {
+  height: auto !important;
+}
+
+#viewers {
+  margin-bottom: 20px;
+}
