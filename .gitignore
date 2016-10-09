@@ -1,11 +1,3 @@
-Durandal/bin/models/
-Durandal/bin/cache/
-Durandal/EchoDemo/obj/
-Durandal/ConsoleClient/obj/
-NeoPixelControl/NeoPixelArduinoInterface/obj/
-NeoPixelControl/NeoPixelArduinoInterface/bin/
-Durandal/bin/ConsoleClient.vshost.exe
-Durandal/pingme.txt
 bin/
 obj/
 data/
@@ -13,11 +5,3 @@ Memories/
 packages/
 node_modules/
 .vs/
-Babble/CloudAPIs/TokenManager.cs
-Experiment/Experiment/CloudAPIs/TokenManager.cs
-indices.txt
-.bal
-.eg
-.snd
-.gadl
-.diagsession
