@@ -30,10 +30,14 @@ long duration, distance; // Duration used to calculate distance
 
 File testFile;
 
-void runCurl() {
+void sendCurlMessage(String action, String data) {
     Process p;
-    int result = p.runShellCommand("curl --data \"door toggle\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
-    Serial.print("result:");
+    String curlCommand = "curl --data \"" + data + "\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/" + action + "?webtask_no_cache=1";
+    int result = p.runShellCommand(curlCommand);
+    Serial.print("Curl command:");
+    Serial.println(curlCommand);
+//    int result = p.runShellCommand("curl --data \"door toggle\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
+    Serial.print("sendCurlMessage result:");
     Serial.println(result);
 /*
   p.begin("curl");
@@ -126,20 +130,30 @@ void loop() {
   Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
   Serial.println(" m");
 
-  Serial.print("Humidity = ");
-  Serial.print(bme.readHumidity());
-  Serial.println(" %");
-
+  monitorHumidity();
 
   Serial.println();
-
-  Serial.println("debug 1");
-  runCurl();
-  Serial.println("debug 2");
 
   delay(1500);
 }
 
+int humidityState = 0;
+
+void monitorHumidity() {
+  Serial.print("Humidity = ");
+  Serial.print(bme.readHumidity());
+  Serial.println(" %");
+
+  if(humidityState == 0 && bme.readHumidity() > 70) {
+    humidityState = 1;
+    sendCurlMessage("door", "open");
+  }
+  else if(humidityState == 1 && bme.readHumidity() < 70) {
+    humidityState = 0;
+    sendCurlMessage("door", "close");
+  }
+
+}
 
 void keyPressed() {
   exit(0);  // Stops the program
