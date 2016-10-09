@@ -1,5 +1,6 @@
 // BME (weather all-in-one device) defines
 #include <Process.h>
+#include <HttpClient.h>
 
 #include <Wire.h>
 #include <SPI.h>
@@ -30,29 +31,6 @@ long duration, distance; // Duration used to calculate distance
 
 File testFile;
 
-void sendCurlMessage(String action, String data) {
-    Process p;
-    String curlCommand = "curl --data \"" + data + "\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/" + action + "?webtask_no_cache=1";
-    int result = p.runShellCommand(curlCommand);
-    Serial.print("Curl command:");
-    Serial.println(curlCommand);
-//    int result = p.runShellCommand("curl --data \"door toggle\" https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
-    Serial.print("sendCurlMessage result:");
-    Serial.println(result);
-/*
-  p.begin("curl");
-  p.addParameter("https://wt-23birdsonfire-gmail-com-0.run.webtask.io/door?webtask_no_cache=1");
-  p.run();
-
-  while (p.available() > 0) {
-    char c = p.read();
-    SerialUSB.print(c);
-  }
-
-  SerialUSB.flush();
-  */
-}
-
 void setup() {  
   pinMode(MM_input, INPUT); // Read the input on pin 2
   Serial.begin(9600); // I also wanted to confirm the value I read.
@@ -71,10 +49,7 @@ void setup() {
 }
 
 void loop() {
-  double doorMon_val = digitalRead( MM_input ); // Go read the pin.
-
-  Serial.print("Door monitor measures: ");
-  Serial.println(doorMon_val);
+  monitorDistance();
 
 /*
   if ( val == HIGH ) {
@@ -85,44 +60,9 @@ void loop() {
   }
 */
 
-  /* The following trigPin/echoPin cycle is used to determine the
-  distance of the nearest object by bouncing soundwaves off of it. */ 
-
-  digitalWrite(SSD_trigPin, LOW); 
-  delayMicroseconds(2); 
-  
-  digitalWrite(SSD_trigPin, HIGH);
-  delayMicroseconds(10); 
-  
-  digitalWrite(SSD_LEDPin, LOW);
-  duration = pulseIn(SSD_echoPin, HIGH);
-  
-  //Calculate the distance (in cm) based on the speed of sound.
-  distance = duration/58.2;
-
-  if (distance >= maximumRange || distance <= minimumRange){
-    /* Send a negative number to computer and Turn LED ON 
-    to indicate "out of range" */
-//    Serial.println("Distance: -1");
-//    digitalWrite(SSD_LEDPin, HIGH); 
-  }
-  else {
-    /* Send the distance to the computer using Serial protocol, and
-    turn LED OFF to indicate successful reading. */
-    Serial.print("Distance: ");
-    Serial.println(distance);
-    digitalWrite(SSD_LEDPin, LOW); 
-  }
-
-
-  Serial.print("Temperature = ");
-  Serial.print(bme.readTemperature());
-  Serial.print(" *C / ");
-  Serial.print(bme.readTemperature()*9/5 + 32);
-  Serial.println(" *F");
+  monitorTemperature();
   
   Serial.print("Pressure = ");
-
   Serial.print(bme.readPressure() / 100.0F);
   Serial.println(" hPa");
 
@@ -144,18 +84,67 @@ void monitorHumidity() {
   Serial.print(bme.readHumidity());
   Serial.println(" %");
 
-  if(humidityState == 0 && bme.readHumidity() > 70) {
+  if(humidityState == 0 && bme.readHumidity() > 75) {
     humidityState = 1;
-    sendCurlMessage("door", "open");
+    Serial.println("TOGGLE WINDOW OPEN");
   }
-  else if(humidityState == 1 && bme.readHumidity() < 70) {
+  else if(humidityState == 1 && bme.readHumidity() < 60) {
     humidityState = 0;
-    sendCurlMessage("door", "close");
+    Serial.println("TOGGLE WINDOW CLOSED");
+  }
+}
+
+void monitorTemperature() {
+  Serial.print("Temperature = ");
+  Serial.print(bme.readTemperature());
+  Serial.print(" *C / ");
+  Serial.print(bme.readTemperature()*9/5 + 32);
+  Serial.println(" *F");
+
+  if((bme.readTemperature()*9/5 + 32) > 125) {
+    Serial.println("HEAT WARNING - TURN FAN ON");
+  }
+}
+
+void monitorDistance() {
+  double doorMon_val = digitalRead( MM_input ); // Go read the pin.
+  Serial.print("Door monitor measures: ");
+  Serial.println(doorMon_val);
+  
+    /* The following trigPin/echoPin cycle is used to determine the
+  distance of the nearest object by bouncing soundwaves off of it. */ 
+
+  digitalWrite(SSD_trigPin, LOW); 
+  delayMicroseconds(2); 
+  
+  digitalWrite(SSD_trigPin, HIGH);
+  delayMicroseconds(10); 
+  
+  digitalWrite(SSD_LEDPin, LOW);
+  duration = pulseIn(SSD_echoPin, HIGH);
+  
+  //Calculate the distance (in cm) based on the speed of sound.
+  distance = duration/58.2;
+
+  if (distance >= maximumRange || distance <= minimumRange){
+    /* Send a negative number to computer and Turn LED ON 
+    to indicate "out of range" */
+    Serial.println("Distance: -1");
+//    digitalWrite(SSD_LEDPin, HIGH); 
+  }
+  else {
+    /* Send the distance to the computer using Serial protocol, and
+    turn LED OFF to indicate successful reading. */
+    Serial.print("Distance: ");
+    Serial.println(distance);
+    digitalWrite(SSD_LEDPin, LOW); 
   }
 
+  if(distance < 20) {
+    Serial.print("DOOR MONITOR: OPEN WIDE.");
+  }
 }
 
 void keyPressed() {
   exit(0);  // Stops the program
 }
-
