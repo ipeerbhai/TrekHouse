@@ -1,62 +1,57 @@
 <html>
 
   <head>
-    <title>Calling Sam...</title>
+    <title>Sam's Phone</title>
     <script src="https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.7.0/kandy.js" ></script>
     <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js" integrity="sha256-mTWSiTBKrphirOX+cJY9g4pRXn80ekTUW0JYnDa+dgM=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="./normalize.css" />
-    <link rel="stylesheet" type="text/css" href="./grid.css" />
-    <link rel="stylesheet" type="text/css" href="./style.css" />
 	<script>
       var projectApiKey = "DAK4a687c8caa7c4cad902fea421c33499c";
       var projectSecretKey = "DAS98901ad5f1cf4120a9c5e5bd0401e3ca";
-      var user = "user2@23birdsonfire.gmail.com";
-      var pass = "2velsaepecumque2";
+      var user = "user1@23birdsonfire.gmail.com";
+      var pass = "1quaedolora1";
     </script>
   </head>
 
   <body>
-  	<div id="app" class="container-fluid">
-	    <h1>Calling Sam...</h1>
-			<div id="viewers" class="row">
-				<div class="col-xs-12 col-sm-6"><div id="remote-container"></div></div>
-				<div class="col-xs-12 col-sm-6"><div id="local-container"></div></div>
-			</div>
-	    <fieldset>
-		    <legend>Call Management</legend>
+    <h1>Sam's Phone</h1>
+    <fieldset>
+    <legend>Call Management</legend>
 
-		    <!-- User input: Callee field. -->
-		    Callee: <input type="text" id="callee"/>
+    <!-- User input: Callee field. -->
+    Callee: <input type="text" id="callee"/>
 
-		    <!-- User input: Handle call buttons. -->
-		    <input type="button" value="Make Call" id="make-call" onclick="startCall();"/>
+    <!-- User input: Handle call buttons. -->
+    <input type="button" value="Make Call" id="make-call" onclick="startCall();"/>
 
-		    <input type="button" value="Mute/Unmute Call" id="mute-call" onclick="toggleMute();" disabled/>
+    <input type="button" value="Mute/Unmute Call" id="mute-call" onclick="toggleMute();" disabled/>
 
-		    <input type="button" value="Hold/Unhold Call" id="hold-call" onclick="toggleHold();" disabled/>
+    <input type="button" value="Hold/Unhold Call" id="hold-call" onclick="toggleHold();" disabled/>
 
-		    <input type="button" value="Show/Hide Video" id="show-video" onclick="toggleVideo();"/>
+    <input type="button" value="Show/Hide Video" id="show-video" onclick="toggleVideo();"/>
 
-		    <input type="button" value="End Call" id="end-call" onclick="endCall();" disabled/>
+    <input type="button" value="End Call" id="end-call" onclick="endCall();" disabled/>
 
-		    <input type="button" value="Accept Call" id="accept-call" onclick="acceptCall();" disabled/>
+    <input type="button" value="Accept Call" id="accept-call" onclick="acceptCall();" disabled/>
 
-		    <input type="button" value="Decline Call" id="decline-call" onclick="declineCall();" disabled/>
-			</fieldset>
+    <input type="button" value="Decline Call" id="decline-call" onclick="declineCall();" disabled/>
+	</fieldset>
 
-			<fieldset>
-				<legend>Messages</legend>
-				<!-- Message output container. -->
-				<div id="messages"> </div>
-			</fieldset>
+	<fieldset>
+		<legend>Messages</legend>
 
-			<!-- Media containers. -->
-		</div>
+		<!-- Message output container. -->
+		<div id="messages"> </div>
+	</fieldset>
+
+	<!-- Media containers. -->
+	Remote video: <div id="remote-container"></div>
+
+	Local video: <div id="local-container"></div>
 
     <script>
-		var SamAddress = "user1@23birdsonfire.gmail.com";
-		document.getElementById("callee").value = SamAddress;
+		var IleneAddress = "user2@23birdsonfire.gmail.com";
+		document.getElementById("callee").value = IleneAddress;
 	  
 		var genericCallback = function(d) {
 			console.log(d);
@@ -238,7 +233,7 @@
 			console.log("onLoginSuccess");
 			log("Login was successful.");
 			isLoggedIn = true;
-			startCall();
+			//startCall(); use to make an automatic call when login finishes
 		}
 		
 		// Setup Kandy to make and receive calls.
@@ -256,7 +251,6 @@
 			}
 		});
 		kandy.login(projectApiKey, user, pass, onLoginSuccess, genericCallback);
-		//startCall();
     </script>
   </body>
 </html>
