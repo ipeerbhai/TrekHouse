@@ -175,7 +175,7 @@ namespace VoiceClient
         //-------------------------------------------------------------------------------------------------------------------------------
         private void PlayRadio()
         {
-            string url = @"http://www.iheart.com/live/power-933-2577/?autoplay=true&pname=806&campid=header&cid=index.html";
+            string url = @"https://www.youtube.com/watch?v=Mm1wuKvrxAw";
             if (m_driver == null)
                 m_driver = new ChromeDriver(@"C:\ChromeDriver");
 
