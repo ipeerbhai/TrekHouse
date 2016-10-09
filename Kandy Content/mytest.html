@@ -1,0 +1,80 @@
+<html>
+
+  <head>
+    <title>User2</title>
+    <script src="https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.7.0/kandy.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+    <script>
+      var projectApiKey = "DAK4a687c8caa7c4cad902fea421c33499c";
+      var projectSecretKey = "DAS98901ad5f1cf4120a9c5e5bd0401e3ca";
+      var user = "user1@23birdsonfire.gmail.com";
+      var pass = "1quaedolora1";
+    </script>
+  </head>
+
+  <body>
+    <h1>User 2</h1>
+    <div id="remote-stream">
+
+    </div>
+    <div id="local-stream">
+
+    </div>
+
+    <script>
+      var genericCallback = function(d) {
+        console.log(d);
+      }
+
+      var onMedia = genericCallback;
+      var onCallInitiated = genericCallback;
+      var onCallInitiateFail = genericCallback;
+      var onCallRejected = genericCallback;
+      var onCallRejectFailed = genericCallback;
+      var onCallIgnored = genericCallback;
+      var onCallIgnoreFailed = genericCallback;
+      var onCallIncoming = function(e) {
+        console.log("Incoming call:");
+        console.log(e);
+        if (e.canAnswer()) {
+          kandy.call.answerCall(e.getId(), true, {});
+        }
+      };
+      var onCallAnswered = genericCallback;
+      var onCallAnsweredFailed = genericCallback;
+      var onCall = genericCallback;
+      var onCallEnded = genericCallback;
+      var onCallEndedFailed = genericCallback;
+
+      var config = {
+        // Designate HTML elements to be our stream containers.
+        remoteVideoContainer: document.getElementById('remote-stream'),
+        localVideoContainer: document.getElementById('local-stream'),
+
+        // Register listeners to call events.
+        listeners: {
+            // Media support event.
+            media: onMedia,
+            // Call events.
+            callinitiated: onCallInitiated,
+            callinitiatefailed: onCallInitiateFail,
+            callrejected: onCallRejected,
+            callrejectfailed: onCallRejectFailed,
+            callignored: onCallIgnored,
+            callignorefailed: onCallIgnoreFailed,
+            callincoming: onCallIncoming,
+            callanswered: onCallAnswered,
+            callansweredFailed: onCallAnsweredFailed,
+            oncall: onCall,
+            callended: onCallEnded,
+            callendedfailed: onCallEndedFailed
+        }
+      };
+      kandy.setup(config);
+      kandy.login(projectApiKey, user, pass, genericCallback, genericCallback);
+      //kandy.call.makeCall(fullUserId, cameraOn, callerId, options);
+
+    </script>
+  </body>
+
+</html>
