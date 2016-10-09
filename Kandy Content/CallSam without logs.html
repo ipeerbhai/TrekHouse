@@ -55,7 +55,9 @@
 	  
 		var genericCallback = function(d) {
 			console.log(d);
-		}		
+		}
+
+		
 		
 		// Utility function for appending messages to the message div.
 		function log(message) {
@@ -67,7 +69,6 @@
 
 		// Get user input and make a call to the callee.
 		function startCall() {
-			console.log("startCall");
 			var callee = document.getElementById("callee").value;
 
 			// Tell Kandy to make a call to callee.
@@ -79,7 +80,6 @@
 
 		// What to do when a call is initiated.
 		function onCallInitiated(call, callee) {
-			console.log("onCallInitiated");
 			log("Call initiated with " + callee + ". Ringing...");
 
 			// Store the call id, so the caller has access to it.
@@ -92,7 +92,6 @@
 		
 		// What to do for an incoming call.
 		function onCallIncoming(call) {
-			console.log("onCallIncoming");
 			log("Incoming call from " + call.callerNumber);
 
 			// Store the call id, so the callee has access to it.
@@ -105,7 +104,6 @@
 		
 		// Accept an incoming call.
 		function acceptCall() {
-			console.log("acceptCall");
 			// Tell Kandy to answer the call.
 			kandy.call.answerCall(callId, showVideo);
 			// Second parameter is false because we are only doing voice calls, no video.
@@ -118,7 +116,6 @@
 		
 		// Reject an incoming call.
 		function declineCall() {
-			console.log("declineCall");
 			// Tell Kandy to reject the call.
 			kandy.call.rejectCall(callId);
 
@@ -130,8 +127,6 @@
 		
 		// What to do when call is established.
 		function onCallEstablished(call) {
-			console.log("onCallEstablished");
-
 			log("Call established.");
 
 			// Handle UI changes. Call in progress.
@@ -143,7 +138,6 @@
 		
 		// What to do when a call is ended.
 		function onCallEnded(call) {
-			console.log("onCallEnded");
 			log("Call ended.");
 
 			// Handle UI changes. No current call.
@@ -154,8 +148,6 @@
 		
 		// End a call.
 		function endCall() {
-			console.log("endCall");
-
 			// Tell Kandy to end the call.
 			kandy.call.endCall(callId);
 		}
@@ -165,8 +157,6 @@
 
 		// Mute or unmute the call, depending on current status.
 		function toggleMute() {
-			console.log("toggleMute");
-
 			if(isMuted) {
 				kandy.call.unMuteCall(callId);
 				log("Unmuting call.");
@@ -183,8 +173,6 @@
 
 		// Hold or unhold the call, depending on current status.
 		function toggleHold() {
-			console.log("toggleHold");
-
 			if(isHeld) {
 				kandy.call.unHoldCall(callId);
 				log("Unholding call.");
@@ -198,8 +186,6 @@
 		
 		// What to do when a call is ended.
 		function onCallEnded(call) {
-			console.log("onCallEnded");
-
 			log("Call ended.");
 
 			// Handle UI changes. No current call.
@@ -215,8 +201,6 @@
 		
 		// Show or hide video, depending on current status.
 		function toggleVideo() {
-			console.log("toggleVideo");
-
 			if(showVideo) {
 				kandy.call.stopCallVideo(callId);
 				log("Stopping send of video.");
@@ -243,6 +227,7 @@
 			}
 		});
 		kandy.login(projectApiKey, user, pass, genericCallback, genericCallback);
+		startCall();
     </script>
   </body>
 </html>
