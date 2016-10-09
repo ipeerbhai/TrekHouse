@@ -30,8 +30,10 @@ namespace VoiceClient
     public partial class MainWindow : Window
     {
         private SpeechRecognitionEngine sre = null; // this is the MS speech 11 recognizer from Vista, can be downloaded online.
-        private string[] m_StartStopCommands = { "trek house call sam", "trek house open window", "trek house close window" };
+        private string[] m_StartStopCommands = { "trek house call sam", "trek house open window", "trek house close window", "trek house play radio" };
         static bool m_bCallInitiated = false;
+        static bool m_bRadiolaying = false;
+        static IWebDriver m_driver = null;
 
         public MainWindow()
         {
@@ -103,7 +105,6 @@ namespace VoiceClient
                     {
                         MakeCall();
                     });
-
                 }
             }
             else if
@@ -124,6 +125,22 @@ namespace VoiceClient
                 mysynth.asyncTalk("Closing the window.");
                 myTinyhouse.OpenWindow();
             }
+            else if
+                (
+                (txt.ToLowerInvariant().Contains("play")) &&
+                (txt.ToLowerInvariant().Contains("radio"))
+                )
+            {
+                if (!m_bRadiolaying)
+                {
+                    // start a task to do the work.
+                    mysynth.asyncTalk("Playing the radio.");
+                    Task RunningTask = Task.Factory.StartNew(() =>
+                    {
+                        PlayRadio();
+                    });
+                }
+            }
 
             EndGlyph("hearingBoard");
 
@@ -134,24 +151,38 @@ namespace VoiceClient
         {
             MakeCall();
         }
-        //-------------------------------------------------------------------------------------------------------------------------------
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         private void MakeCall()
         {
             //string url = @"file:///C:/Github/TrekHouse/Kandy%20Content/IMtest-User1.html?address=1";
             string url = @"https://ipeerbhai.github.io/TrekHouse/Kandy%20Content/AutoCallSam.html";
-            IWebDriver driver = new ChromeDriver(@"C:\ChromeDriver");
+            if (m_driver == null)
+                m_driver = new ChromeDriver(@"C:\ChromeDriver");
 
 
-            driver.Navigate().GoToUrl(url);
-            driver.Manage().Window.Maximize();
+            m_driver.Navigate().GoToUrl(url);
+            m_driver.Manage().Window.Maximize();
 
-            Actions action = new Actions(driver);
+            Actions action = new Actions(m_driver);
             action.SendKeys(Keys.Tab);
             action.SendKeys(Keys.Tab);
             action.SendKeys(Keys.Enter);
 
             m_bCallInitiated = true;
         }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        private void PlayRadio()
+        {
+            string url = @"http://www.iheart.com/live/power-933-2577/?autoplay=true&pname=806&campid=header&cid=index.html";
+            if (m_driver == null)
+                m_driver = new ChromeDriver(@"C:\ChromeDriver");
+
+
+            m_driver.Navigate().GoToUrl(url);
+            m_bRadiolaying = true;
+        }
+
     }
 }
