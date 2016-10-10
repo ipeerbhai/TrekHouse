@@ -5,3 +5,5 @@ The main loop monitors the devices and executes commands when conditions chagne.
 When the temperature rises above 80 degrees F, a command is issued to begin the fan.  When the temperature drops below 77 degrees F, a command is issued to halt the fan.
 
 When humidity rises above 75% relative humidity, a command is issued to open the window.  When the humidity falls below 60% relative humidity, a command is issued to close the window.
+
+The python server is in charge of monitoring the output of the Arduino.  It reads the comm channel (#5 by default).  When it observes an issued command, it sends a POST to the webserver.
