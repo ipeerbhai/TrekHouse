@@ -43,13 +43,17 @@ void setup() {
   Serial.println(F("BME280 test"));
   if (!bme.begin()) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
+    while (1) {
+      Serial.println("DEBUG ERROR");
+    }
   }
 
 }
 
 void loop() {
-  monitorDistance();
+    Serial.println("hello world");
+
+ monitorDistance();
 
 /*
   if ( val == HIGH ) {
@@ -74,7 +78,7 @@ void loop() {
 
   Serial.println();
 
-  delay(1500);
+  delay(500);
 }
 
 int humidityState = 0;
@@ -94,6 +98,7 @@ void monitorHumidity() {
   }
 }
 
+int fanStatus = 0;
 void monitorTemperature() {
   Serial.print("Temperature = ");
   Serial.print(bme.readTemperature());
@@ -101,8 +106,13 @@ void monitorTemperature() {
   Serial.print(bme.readTemperature()*9/5 + 32);
   Serial.println(" *F");
 
-  if((bme.readTemperature()*9/5 + 32) > 125) {
+  if((bme.readTemperature()*9/5 + 32) > 80 && fanStatus == 0) {
     Serial.println("HEAT WARNING - TURN FAN ON");
+    fanStatus = 1;
+  }
+  else if ((bme.readTemperature()*9/5 + 32) < 77 && fanStatus == 1) {
+    Serial.println("HEAT NORMAL  - TURN FAN OFF");
+    fanStatus = 0;
   }
 }
 
@@ -141,7 +151,7 @@ void monitorDistance() {
   }
 
   if(distance < 20) {
-    Serial.print("DOOR MONITOR: OPEN WIDE.");
+    Serial.println("DOOR MONITOR: OPEN WIDE.");
   }
 }
 
