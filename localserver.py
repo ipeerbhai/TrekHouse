@@ -13,7 +13,7 @@ try:
     if "WINDOW" in line:
       r = requests.post(fullPath)
     if "FAN" in line:
-      r = request.post(fullPathFire)
+      r = requests.post(fullPathFire)
 except KeyboardInterrupt:
   ser.close()
   print('^C received, shutting down the web server')
